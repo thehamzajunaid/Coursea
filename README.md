@@ -1,5 +1,5 @@
 # Coursea
-Authentitcation: Done.
+####Authentitcation: Done.
 Authorization: Only a teacher/instructor can upload courses.
 Reset Password: Logic implemented in back end only. "/api/controllers/auth.controller.js"
 View Courses: Done. 
