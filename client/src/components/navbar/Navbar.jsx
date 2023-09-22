@@ -51,7 +51,7 @@ function Navbar() {
           </Link>
           <span>English</span>
           {!currentUser?.isTeacher && <span>Become a Teacher</span>}
-          {!currentUser?.isTeacher && <span>Enrolled Courses</span>}
+          {/* {!currentUser?.isTeacher && <span>Enrolled Courses</span>} */}
           {currentUser ? (
             <div className="user" onClick={() => setOpen(!open)}>
               <img src={currentUser.img || "/img/noavatar.jpg"} alt="" />

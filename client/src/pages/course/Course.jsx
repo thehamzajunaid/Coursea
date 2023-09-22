@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Course.scss";
 import { Slider } from "infinite-react-carousel/lib";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
+import { useNavigate } from "react-router-dom";
 // import Reviews from "../../components/reviews/Reviews";
 
 function Course() {
   const { id } = useParams();
+  const navigate = useNavigate()
+
+  const [isSlider, setisSlider] = useState(false)
+  useEffect(()=>{
+  setisSlider(true)
+  },[])
 
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
@@ -33,6 +40,26 @@ function Course() {
       }),
     enabled: !!teacherId,
   });
+
+  const { isLoading : isLoadingLoggedInUser, error : errorLoggedInUser, data : dataLoggedInUser } = useQuery({
+    queryKey: ["loggedInUser"],
+    queryFn: () =>
+      currentUser
+        ? newRequest.get(`/enrollments/alreadyEnrolled/${id}`).then((res) => {
+            return res.data;
+          })
+        : Promise.resolve(null), // Return a resolved Promise if currentUser is null
+  });
+
+  console.log(dataLoggedInUser)
+
+  const handleBuyNow = () => {
+    if (!currentUser) {
+      navigate("/login")
+    } else{
+      navigate(`/pay/${id}`)
+    }
+  }
 
   return (
     <div className="gig">
@@ -71,13 +98,18 @@ function Course() {
                 )}
               </div>
             )}
-            <Slider slidesToShow={1} arrowsScroll={1} className="slider">
+            {isSlider && <Slider slidesToShow={1} arrowsScroll={1} className="slider">
               {data.images.map((img) => (
                 <img key={img} src={img} alt="" />
               ))}
-            </Slider>
+            </Slider>}
+
             <h2>About This Course</h2>
             <p>{data.desc}</p>
+
+            {/* Course contents only visible to Enrolled Students and the Teacher who uploaded the course */}
+            {/* <p>{currentUser && dataLoggedInUser?.teacherId == currentUser?.id && dataLoggedInUser?.buyerId == currentUser?.id && <b>Course Contents</b>}</p> */}
+            <p>{currentUser && dataLoggedInUser?.teacherId == currentUser?.id && dataLoggedInUser == true && <b>Course Contents</b>}</p>
             {isLoadingUser ? (
               "loading"
             ) : errorUser ? (
@@ -141,9 +173,8 @@ function Course() {
             </div>
             <p>{data.shortDesc}</p>
             {!currentUser?.isTeacher ? 
-            <Link to={`/pay/${id}`}>
-              <button>Buy Course</button>
-            </Link> : 
+              <button>{currentUser && dataLoggedInUser == true ? <span>Already Enrolled</span> : <span onClick={handleBuyNow}>Buy Now</span>}</button>
+             : 
             <Link to={`/`}>
               <button>Go back </button>
             </Link> }

@@ -11,10 +11,10 @@ const CourseSchema = new Schema(
       type: String,
       required: true,
     },
-    teacherName: {
-      type: String,
-      required: true,
-    },
+    // teacherName: {
+    //   type: String,
+    //   required: true,
+    // },
     desc: {
       type: String,
       required: true,

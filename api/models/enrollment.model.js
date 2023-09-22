@@ -17,7 +17,7 @@ const EnrollmentSchema = new Schema(
     },
     paymentComplete: {
       type: Boolean,
-      required: true,
+      default: false,
     },
     payment_intent: {
       type: String,

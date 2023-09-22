@@ -1,14 +1,15 @@
 import Course from "../models/course.model.js";
 import createError from "../utils/createError.js";
+// import User from "../models/user.model.js";
 
 export const createCourse = async (req, res, next) => {
   if (!req.isTeacher)
     return next(createError(403, "Only Teachers can create a course!"));
 
-  const teacher = await User.findById(req.userId)
+  // const teacher = await User.findById(req.userId)
 
   const newCourse = new Course({
-    teacherName: teacher.username,
+    // teacherName: teacher.username,
     ...req.body,
   });
 

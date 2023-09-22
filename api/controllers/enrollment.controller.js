@@ -41,6 +41,19 @@ export const getEnrollments = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getAlreadyEnrolledInCourse = async (req, res, next) => {
+  try {
+    const getAlreadyEnrolledInCourse = await Enrollment.find(
+      {"buyerId": req.userId, "courseId": req.params.courseId}
+    );
+
+    res.status(200).send(getAlreadyEnrolledInCourse.length > 0);
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const confirm = async (req, res, next) => {
   try {
     const enrollment = await Enrollment.findOneAndUpdate(
