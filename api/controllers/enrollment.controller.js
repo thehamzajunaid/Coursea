@@ -45,17 +45,17 @@ export const getEnrollments = async (req, res, next) => {
 export const getAlreadyEnrolledInCourse = async (req, res, next) => {
   try {
     const getAlreadyEnrolledInCourse = await Enrollment.find(
-      {"buyerId": req.userId, "courseId": req.params.courseId}
+      {"buyerId": req.userId, "courseId": req.params.courseId, "paymentComplete": true}
     );
 
-    let status = false
+    let status;
 
     if (getAlreadyEnrolledInCourse.length > 0){
-      status = getAlreadyEnrolledInCourse.slice(-1)[0].paymentComplete === true
+      status = true
     }else {
       status = false
     }
-
+    
     res.status(200).send(status);
   } catch (err) {
     next(err);
