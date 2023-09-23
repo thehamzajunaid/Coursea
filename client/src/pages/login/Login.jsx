@@ -27,9 +27,10 @@ function Login() {
         <h1>Sign in</h1>
         <label htmlFor="">Email</label>
         <input
-          name="username"
+          name="email"
           type="text"
           placeholder="johndoe"
+          required
           onChange={(e) => setEmail(e.target.value)}
         />
 
@@ -37,6 +38,7 @@ function Login() {
         <input
           name="password"
           type="password"
+          required
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Login</button>

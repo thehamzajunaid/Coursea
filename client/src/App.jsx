@@ -19,8 +19,14 @@ import {
 } from "@tanstack/react-query";
 import Pay from "./pages/pay/Pay";
 import Success from "./pages/success/Success";
+import ChangePassword from "./pages/changePassword/ChangePassword";
+import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
+
+
 function App() {
+
   const queryClient = new QueryClient();
+
 
   const Layout = () => {
     return (
@@ -63,10 +69,14 @@ function App() {
         //   path: "/message/:id",
         //   element: <Message />,
         // },
-        // {
-        //   path: "/add",
-        //   element: <Add />,
-        // },
+        {
+          path: "/change-password",
+          element: (
+            <ProtectedRoute>
+              <ChangePassword />
+            </ProtectedRoute>
+          ),
+        },
         {
           path: "/courses/:id",
           element: <Course />,

@@ -51,7 +51,7 @@ function Course() {
         : Promise.resolve(null), // Return a resolved Promise if currentUser is null
   });
 
-  console.log(dataLoggedInUser)
+  // console.log(dataLoggedInUser)
 
   const handleBuyNow = () => {
     if (!currentUser) {

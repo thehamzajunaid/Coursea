@@ -48,7 +48,15 @@ export const getAlreadyEnrolledInCourse = async (req, res, next) => {
       {"buyerId": req.userId, "courseId": req.params.courseId}
     );
 
-    res.status(200).send(getAlreadyEnrolledInCourse.length > 0);
+    let status = false
+
+    if (getAlreadyEnrolledInCourse.length > 0){
+      status = getAlreadyEnrolledInCourse.slice(-1)[0].paymentComplete === true
+    }else {
+      status = false
+    }
+
+    res.status(200).send(status);
   } catch (err) {
     next(err);
   }

@@ -3,6 +3,26 @@ import upload from "../../utils/upload";
 import "./Register.scss";
 import newRequest from "../../utils/newRequest";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { CircularProgress } from '@mui/material';
+
+import { createTheme, ThemeProvider  } from '@mui/material/styles';
+
+const theme = createTheme({
+  status: {
+    danger: '#e53e3e',
+  },
+  palette: {
+    primary: {
+      main: '#ffffff',
+      darker: '#053e85',
+    },
+    neutral: {
+      main: '#64748B',
+      contrastText: '#fff',
+    },
+  },
+});
 
 function Register() {
   const [file, setFile] = useState(null);
@@ -15,6 +35,7 @@ function Register() {
     isTeacher: false,
     desc: "",
   });
+  const [spinner, setSpinner] = useState(false)
 
   const navigate = useNavigate();
 
@@ -31,19 +52,23 @@ function Register() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const url = await upload(file);
+    setSpinner(true)
     try {
+      const url = await upload(file);
       const newUser = await newRequest.post("/auth/register", {
         ...user,
         img: url,
       });
       console.log(newUser.data)
+      setSpinner(false)
       navigate("/")
     } catch (err) {
       console.log(err);
     }
+
   };
+
+
   return (
     <div className="register">
       <form onSubmit={handleSubmit}>
@@ -54,6 +79,7 @@ function Register() {
             name="username"
             type="text"
             placeholder="johndoe"
+            required
             onChange={handleChange}
           />
           <label htmlFor="">Email</label>
@@ -61,10 +87,11 @@ function Register() {
             name="email"
             type="email"
             placeholder="email"
+            required
             onChange={handleChange}
           />
           <label htmlFor="">Password</label>
-          <input name="password" type="password" onChange={handleChange} />
+          <input name="password" required type="password" onChange={handleChange} />
           <label htmlFor="">Profile Picture</label>
           <input type="file" accept='.png, .jpg, .jpeg' onChange={(e) => setFile(e.target.files[0])} />
           <label htmlFor="">Country</label>
@@ -72,9 +99,15 @@ function Register() {
             name="country"
             type="text"
             placeholder="Usa"
+            required
             onChange={handleChange}
           />
-          <button type="submit">Register</button>
+          <button type="submit">{spinner
+                    ?
+                    <ThemeProvider  theme={theme}>
+                        <CircularProgress/>
+                    </ThemeProvider>   
+                    : "Register"}</button>
         </div>
         <div className="right">
           <h1>I want to become a Teacher</h1>
@@ -90,6 +123,7 @@ function Register() {
             name="phone"
             type="text"
             placeholder="+1 234 567 89"
+            required
             onChange={handleChange}
           />
           <label htmlFor="">Description</label>

@@ -78,6 +78,9 @@ function Navbar() {
                   </Link>
                   </>
                   }
+                  <Link className="link" to="/change-password">
+                    Change Password
+                  </Link>
                   <Link className="link" onClick={handleLogout} to="">
                     Logout
                   </Link>
