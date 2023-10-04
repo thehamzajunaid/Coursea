@@ -14,7 +14,7 @@ function Featured() {
       <div className="container">
         <div className="left">
           <h1>
-            Find the perfect <span>courses</span> for your training
+            Find the perfect <span style={{color: "rgb(99 102 241)"}}>courses</span> for your training
           </h1>
           <div className="search">
             <div className="searchInput">

@@ -8,10 +8,12 @@ const Success = () => {
   const params = new URLSearchParams(search);
   const payment_intent = params.get("payment_intent");
 
+  const currentUserId = JSON.parse(localStorage.getItem("currentUser"))._id;
+
   useEffect(() => {
     const makeRequest = async () => {
       try {
-        await newRequest.put("/enrollments", { payment_intent });
+        await newRequest.put("/enrollments", { payment_intent, currentUserId });
         setTimeout(() => {
           navigate("/");
         }, 5000);

@@ -75,6 +75,8 @@ export const confirm = async (req, res, next) => {
       }
     );
 
+    const deletePendingEnrollment = await Enrollment.deleteMany( { buyerId: req.body.currentUserId, paymentComplete: false } )
+
     res.status(200).send("Payment has been confirmed.");
   } catch (err) {
     next(err);
